@@ -9,7 +9,7 @@
 
 static int nsizes;     // the number of entries in bd_sizes array
 
-#define LEAF_SIZE     16                         // The smallest block size
+#define LEAF_SIZE     16                         // The smallest block size 16btye
 #define MAXSIZE       (nsizes-1)                 // Largest index in bd_sizes array
 #define BLK_SIZE(k)   ((1L << (k)) * LEAF_SIZE)  // Size of block at size k
 #define HEAP_SIZE     BLK_SIZE(MAXSIZE) 
@@ -350,5 +350,6 @@ bd_init(void *base, void *end) {
     printf("free %d %d\n", free, BLK_SIZE(MAXSIZE)-meta-unavailable);
     panic("bd_init: free mem");
   }
+  bd_print();
 }
 
