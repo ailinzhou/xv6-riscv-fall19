@@ -26,8 +26,8 @@ uservec:
         
 	# swap a0 and sscratch
         # so that a0 is TRAPFRAME
-        csrrw a0, sscratch, a0
-
+        csrrw a0, sscratch, a0 // sscratch在之前被设置为指向p->tf,执行完这句 a0指向-> p->tf
+        // 保存用户的寄存器到 p->tf. tf确实像一个降落场中的停机位
         # save the user registers in TRAPFRAME
         sd ra, 40(a0)
         sd sp, 48(a0)

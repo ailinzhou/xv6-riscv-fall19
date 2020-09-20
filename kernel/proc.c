@@ -147,8 +147,8 @@ freeproc(struct proc *p)
   p->xstate = 0;
   p->state = UNUSED;
 }
-
-// Create a page table for a given process,
+// Do create and init map TRAMPOLINE and TRAPFRAME at highest address. by ailin
+// Create a page table for a given process
 // with no user pages, but with trampoline pages.
 pagetable_t
 proc_pagetable(struct proc *p)
@@ -162,9 +162,14 @@ proc_pagetable(struct proc *p)
   // at the highest user virtual address.
   // only the supervisor uses it, on the way
   // to/from user space, so not PTE_U.
+
+  // TRAMPOLINE is a virtual address at top user address space. by ailin
+  // This code map "highest user address" to trampoline.S. by ailin
   mappages(pagetable, TRAMPOLINE, PGSIZE,
            (uint64)trampoline, PTE_R | PTE_X);
-
+  // TRAPFRAME is a virtual address below TRAMPOLINE by:ailin
+  // This map TRAPFRAME point to p -> tf，p->tf is create at allocproc() and is an emptye page. by ailin 
+  // TRAMPOLINE = TRAMPOLINE - PGSIZE 
   // map the trapframe just below TRAMPOLINE, for trampoline.S.
   mappages(pagetable, TRAPFRAME, PGSIZE,
            (uint64)(p->tf), PTE_R | PTE_W);
